@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SO-101 Autonomy Lab</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <script defer src="/assets/app.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="mark">◎</span>
+        <div>
+          <h1>SO-101 <span>Autonomy Lab</span></h1>
+          <small>LOCAL ROBOTICS WORKBENCH</small>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="mode" class="badge">Simulation</span
+        ><button id="pause">Pause</button
+        ><button id="stop" class="stop">■ STOP</button>
+      </div>
+    </header>
+    <div class="notice">
+      Supervised operation · Software Stop is not a hardware emergency stop.
+      Keep the motor power disconnect within reach.
+    </div>
+    <main>
+      <aside>
+        <section>
+          <div class="section-heading">
+            <h2>Device</h2>
+            <span id="connection" class="dot-label">Connecting</span>
+          </div>
+          <label
+            >Backend<select id="backend">
+              <option value="simulation">Encoder simulator</option>
+              <option value="mujoco">MuJoCo (optional extra)</option>
+              <option value="hardware">Physical SO-101 follower</option>
+            </select></label
+          >
+          <label
+            >USB serial port<select id="serial">
+              <option value="">Discover USB ports</option>
+            </select></label
+          ><label
+            >Saved motor calibration<select id="calibration">
+              <option value="">Discover calibrations</option>
+            </select></label
+          >
+          <label class="check"
+            ><input id="operator" type="checkbox" />I selected the follower and
+            support the arm</label
+          >
+          <div class="row">
+            <button id="discover">Discover</button
+            ><button id="connect" class="primary">Connect</button
+            ><button id="disconnect">Disconnect</button>
+          </div>
+          <p id="device-note" class="muted">
+            Simulation starts automatically. Hardware is never connected on
+            startup.
+          </p>
+          <div id="joints"></div>
+          <label
+            >Gripper opening
+            <input
+              id="gripper"
+              type="range"
+              min="0"
+              max="100"
+              value="70" /></label
+          ><button id="grip">Preview gripper motion</button>
+          <div class="row">
+            <button id="resume">Validate & resume</button
+            ><button id="standby">Verified standby</button>
+          </div>
+          <button id="commission" class="wide">Commissioning guide</button>
+        </section>
+        <section>
+          <h2>Model connection</h2>
+          <label>Provider<select id="provider"></select></label
+          ><label
+            >Endpoint<input
+              id="endpoint"
+              type="url"
+              spellcheck="false" /></label
+          ><label
+            >API key<input
+              id="api-key"
+              type="password"
+              autocomplete="off"
+              placeholder="Session only, or environment variable" /></label
+          ><label class="check"
+            ><input id="persist-key" type="checkbox" />Save in OS
+            keychain</label
+          >
+          <div class="row">
+            <button id="save-provider">Save</button
+            ><button id="models">Discover models</button>
+          </div>
+          <label
+            >Model<input
+              id="model"
+              list="model-list"
+              placeholder="Choose an available model ID"
+              spellcheck="false" /><datalist id="model-list"></datalist
+          ></label>
+          <label class="check"
+            ><input id="share" type="checkbox" />Share selected camera images
+            with provider</label
+          >
+          <p class="muted">
+            Tool context goes to the selected provider. Image sharing is off by
+            default. Local endpoints may route to cloud models.
+          </p>
+          <button id="probe" class="wide">
+            Save & test image + tool support
+          </button>
+          <p id="provider-status" class="muted">
+            No provider required for simulation
+          </p>
+        </section>
+      </aside>
+      <div class="workspace-column">
+        <section class="workspace">
+          <div class="section-heading">
+            <div>
+              <h2>Live workspace</h2>
+              <p class="muted">Observe · validate · execute · verify</p>
+            </div>
+            <span id="sharing" class="badge">Images stay local</span>
+          </div>
+          <div id="camera-grid">
+            <img id="preview" alt="Geometric simulator view" />
+          </div>
+          <div id="tcp" class="telemetry">Waiting for feedback</div>
+          <div class="row">
+            <button id="find-cameras">Discover cameras</button
+            ><select id="camera-select">
+              <option value="">Select camera</option></select
+            ><select id="camera-role">
+              <option>overhead</option>
+              <option>wrist</option>
+              <option>side</option>
+              <option>observation</option></select
+            ><button id="open-camera">Start preview</button
+            ><button id="plane">Register plane</button>
+          </div>
+          <div class="row cartesian">
+            <label
+              >X (m)<input
+                id="x"
+                type="number"
+                step=".005"
+                value=".28" /></label
+            ><label
+              >Y (m)<input id="y" type="number" step=".005" value="0" /></label
+            ><label
+              >Z (m)<input id="z" type="number" step=".005" value=".1" /></label
+            ><button id="move-tip">Move TCP safely</button>
+          </div>
+        </section>
+        <section>
+          <div class="section-heading">
+            <div>
+              <h2>Explore my workspace</h2>
+              <p class="muted">
+                Small, ranked experiments within the configured envelope
+              </p>
+            </div>
+            <button id="explore" class="primary">
+              Start supervised exploration ↗
+            </button>
+          </div>
+          <pre id="report" class="report">
+No capability report yet. Exploration stops after a fixed experiment budget.</pre
+          >
+        </section>
+        <section>
+          <div class="section-heading">
+            <div>
+              <h2>Skill library</h2>
+              <p class="muted">
+                Each physical task needs measured fixtures and an approved plan
+              </p>
+            </div>
+          </div>
+          <div id="skills" class="skill-grid"></div>
+        </section>
+        <section>
+          <h2>AI activity</h2>
+          <div class="row">
+            <input
+              id="objective"
+              placeholder="Observe the workspace and propose a useful safe experiment"
+            /><button id="run-agent" class="primary">Run agent</button>
+          </div>
+          <p class="muted">
+            Decisions and tool results appear below. Maximum 12 steps; rejected
+            motion is never retried automatically.
+          </p>
+          <div id="activity" class="timeline"></div>
+        </section>
+        <section>
+          <div class="section-heading">
+            <h2>Experiment history</h2>
+            <button id="export">Export JSONL</button>
+          </div>
+          <div id="history" class="timeline"></div>
+        </section>
+      </div>
+    </main>
+    <div id="toast" role="status"></div>
+    <dialog id="modal">
+      <div class="section-heading">
+        <h2 id="modal-title"></h2>
+        <button id="modal-close">✕</button>
+      </div>
+      <p id="modal-description"></p>
+      <pre id="modal-info"></pre>
+      <label id="editor-label"
+        >Measured configuration / parameters<textarea
+          id="editor"
+          rows="16"
+          spellcheck="false"
+        ></textarea></label
+      ><label id="approval-label" class="check"
+        ><input id="approval" type="checkbox" />I reviewed this exact plan,
+        cleared the workspace and approve contact</label
+      ><button id="modal-action" class="primary">Save</button>
+    </dialog>
+  </body>
+</html>

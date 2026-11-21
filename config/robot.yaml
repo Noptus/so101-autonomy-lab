@@ -1,0 +1,10 @@
+# Reference profile; values are not automatically applied to a physical robot.
+backend: simulation
+hardware_package: lerobot[feetech]==0.7.0
+positioning_joints: [shoulder_pan, shoulder_lift, elbow_flex, wrist_flex, wrist_roll]
+gripper: gripper
+arm_units: calibrated_degrees
+gripper_units: percentage_0_100
+use_degrees: true
+max_relative_target: 2.0
+# Configure hardware through the dashboard commissioning guide using measured values.

@@ -1,0 +1,8 @@
+# Discovery, not a hardcoded model catalogue. /api/providers exposes these presets.
+providers: [openai, anthropic, gemini, openrouter, mistral, xai, groq, together, ollama, lmstudio, custom]
+required_capabilities: [image_input, structured_tool_calls]
+capability_check: synthetic_red_image_and_tool_call
+probe_validity_hours: 24
+share_images_default: false
+model_ids: discover_from_selected_endpoint
+pricing: operator_supplied_per_million_tokens_or_unknown

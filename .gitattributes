@@ -1,0 +1,2 @@
+# Preserve the original upstream URDF byte-for-byte, including its whitespace.
+src/so101_lab/assets/so101.urdf -whitespace

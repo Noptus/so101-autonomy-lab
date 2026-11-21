@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.env
+.so101-lab/
+work/
+dist/
+*.egg-info/
+.DS_Store
+MUJOCO_LOG.TXT

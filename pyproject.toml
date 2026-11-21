@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling==1.30.1"]
+build-backend = "hatchling.build"
+
+[project]
+name = "so101-autonomy-lab"
+version = "0.1.0"
+description = "A local, supervised SO-101 robotics lab with multimodal agents and simulation"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "fastapi==0.165.0", "uvicorn==0.54.0", "websockets==15.0.1",
+  "pydantic==2.14.4", "numpy==2.2.6", "scipy==1.16.3",
+  "opencv-python-headless==4.13.0.92", "httpx==0.28.1",
+  "pyserial==3.5", "python-chess==1.999", "PyYAML==6.0.4",
+  "keyring==25.7.0", "filelock==4.2.1"
+]
+[project.optional-dependencies]
+hardware = ["lerobot[feetech]==0.7.0"]
+mujoco = ["mujoco==4.0.1"]
+[dependency-groups]
+dev = ["pytest==9.2.0", "pytest-asyncio==1.5.0", "ruff==0.14.6"]
+[project.scripts]
+so101-lab = "so101_lab.main:main"
+[tool.hatch.build.targets.wheel]
+packages = ["src/so101_lab"]
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+[tool.ruff]
+line-length = 110
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

@@ -1,0 +1,14 @@
+# Demonstration defaults. Commission measured limits in the UI; never copy this
+# into a hardware profile as a declaration that the installation is safe.
+max_velocity: 12.0
+max_acceleration: 30.0
+max_camera_age: 0.75
+max_feedback_age: 0.3
+max_motion_seconds: 30
+clearance: 0.012
+link_radius: 0.012
+workspace:
+  lower: [-0.45, -0.45, 0.015]
+  upper: [0.45, 0.45, 0.5]
+table_z: 0
+exclusions: []
